@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+
+		<nav th:replace="common/common :: navbar"></nav>
+
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+
+					<div class="page-header">
+						<h3 class="page-title">
+							<span class="page-title-icon bg-gradient-primary text-white mr-2">
+								<i class="mdi mdi-home"></i>
+							</span> Dashboard
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item active" aria-current="page">
+									<span></span>Overview <i
+										class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+								</li>
+							</ul>
+						</nav>
+					</div>
+					<div class="row">
+						<div class="col-md-4 stretch-card grid-margin">
+							<div class="card bg-gradient-danger card-img-holder text-white">
+								<div class="card-body">
+									<img src="assets/images/dashboard/circle.svg" class="card-img-absolute"
+										alt="circle-image" />
+									<h4 class="font-weight-normal mb-3">Doctors<i
+											class="mdi mdi-chart-line mdi-24px float-right"></i>
+									</h4>
+									<br>
+									<h2 class="mb-5" th:text="${doctorCount}"></h2><h3> Total</h3>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 stretch-card grid-margin">
+							<div class="card bg-gradient-info card-img-holder text-white">
+								<div class="card-body">
+									<img src="assets/images/dashboard/circle.svg" class="card-img-absolute"
+										alt="circle-image" />
+									<h4 class="font-weight-normal mb-3">Patients<i
+											class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+									</h4>
+									<br>
+									<h2 class="mb-5" th:text="${patientCount}"></h2><h3> Total</h3>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4 stretch-card grid-margin">
+							<div class="card bg-gradient-success card-img-holder text-white">
+								<div class="card-body">
+									<img src="assets/images/dashboard/circle.svg" class="card-img-absolute"
+										alt="circle-image" />
+									<h4 class="font-weight-normal mb-3">Room or Wards<i
+											class="mdi mdi-diamond mdi-24px float-right"></i>
+									</h4>
+									<br>
+									<h2 class="mb-5" th:text="${roomCount}"></h2><h3> Total</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-12 grid-margin">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Appointment List</h4>
+									<div class="table-responsive">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th> Patient's Name </th>
+													<th> Doctor's Name </th>
+													<th> Appointment Day </th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr data-th-each="appointment : ${appointmentList}">
+													<td>#</td>
+													<td
+														th:text="${appointment.patient.firstName}+' '+${appointment.patient.lastName}">
+													</td>
+													<td
+														th:text="${appointment.doctor.firstName}+' '+${appointment.doctor.lastName}">
+													</td>
+													<td th:text="${appointment.day}"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<!-- content-wrapper ends -->
+				<!-- partial:partials/_footer.html -->
+
+				<div th:replace="common/common :: footer"></div>
+
+				<!-- partial -->
+			</div>
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+	<!-- End custom js for this page -->
+</body>
+
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body onload="outPatient()">
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+
+		<nav th:replace="common/common :: navbar"></nav>
+
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+
+					<div class="page-header">
+						<h3 class="page-title">Patient's Detail</h3>
+						<nav aria-label="breadcrumb">
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item active" aria-current="page">
+									<a th:href="@{/patient/patientUpdate(pid=${patient.patientId})}">Patient's Information</a>
+								</li>
+								<li class="breadcrumb-item active" aria-current="page">Update Patient</li>
+							</ul>
+						</nav>
+					</div>
+					<div class="row">
+
+						<div class="col-12">
+							<div class="card">
+								<form th:action="@{/patient/patientUpdate}" class="form-sample" method="POST">
+									<div class="card-body">
+										<h4 class="card-title">Patient Update</h4>
+
+										<p class="card-description" th:if="${emailExists}" style="color:orangered">Email Already Exists! Please try with another one.</p>
+										<p class="card-description" th:if="${phoneExists}" style="color:orangered">Phone Already Exists! Please try with another one.</p>
+										<p class="card-description" th:if="${nrcExists}" style="color:orangered">NRC Already Exists! Please check typing error.</p>
+										
+										<br />
+										
+										<input type="hidden" name="patientId" th:value="${patient.patientId}" />
+										
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">First Name</label>
+													<div class="col-sm-9">
+														<input type="text" placeholder="First Name" name="firstName"
+															th:value="${patient.firstName}" class="form-control" required />
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Last Name</label>
+													<div class="col-sm-9">
+														<input type="text" placeholder="Last Name" name="lastName"
+															th:value="${patient.lastName}" class="form-control" required />
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Gender</label>
+													<div class="col-sm-9">
+														<select class="form-control" th:value="${patient.gender}"
+															name="gender">
+															<option th:selected="${patient.gender}=='Male'"
+																value="Male">Male</option>
+															<option th:selected="${patient.gender}=='Female'"
+																value="Female">Female</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Date of Birth</label>
+													<div class="col-sm-9">
+														<input class="form-control" type="date" id="dob"
+															th:value="${patient.dob}" name="dob" required />
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Email</label>
+													<div class="col-sm-9">
+														<input type="email" class="form-control"
+															th:value="${user.email}" name="email" required/>
+															
+															<input type="hidden" name="userId" th:value="${user.userId}" />
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Phone</label>
+													<div class="col-sm-9">
+														<input type="text" class="form-control"
+															th:value="${patient.phone}" name="phone" required />
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">NRC</label>
+													<div class="col-sm-9">
+														<input type="text" class="form-control"
+															th:value="${patient.nrc}" name="nrc" required/>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Address</label>
+													<div class="col-sm-9">
+														<textarea class="form-control" th:text="${patient.address}"
+															name="address"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Blood Type</label>
+													<div class="col-sm-9">
+														<select class="form-control" th:value="${patient.bloodType}"
+															name="bloodType">
+															<option th:selected="${patient.bloodType}=='A'" value="A">A
+															</option>
+															<option th:selected="${patient.bloodType}=='B'" value="B">B
+															</option>
+															<option th:selected="${patient.bloodType}=='AB'" value="AB">
+																AB</option>
+															<option th:selected="${patient.bloodType}=='O'" value="O">O
+															</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Symptoms</label>
+													<div class="col-sm-9">
+														<textarea class="form-control" th:text="${patient.symptoms}"
+															name="symptoms"></textarea>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Type</label>
+													<div class="col-sm-9">
+													
+													<select class="form-control" th:value="${patient.type}"
+															name="type" id="selectType" onchange="disOrEnSelect();">
+															<option th:selected="${patient.type}=='In-Patient'" value="In-Patient" >In-Patient
+															</option>
+															<option th:selected="${patient.type}=='Out-Patient'" value="Out-Patient">Out-Patient
+															</option>
+															
+														</select>
+													</div>
+												</div>
+											</div>
+											
+											<input type="hidden" id="isOutPatient" th:value="${isOutPatient}" />
+											<input type="hidden" id="isInPatient" th:value="${isInPatient}" />
+											<input type="hidden" id="ggwp" name="roomOrWardId" value="">
+											
+											<div class="col-md-6" th:if="${inPatientDisable}">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">RoomOrWard</label>
+													<div class="col-sm-9">
+													<select id="roomOrWard" class="form-control" onchange="OutToIn();"
+															name="roomOrWardId" disabled>
+															<option id="dummy" value="" >Choose One</option>
+															<option th:each="roomOrWard : ${roomOrWardList}"  th:value="${roomOrWard.roomId}" th:text="${roomOrWard.type}+' person room and '+ ${roomOrWard.leftSpace}+' place left. Fee - '+${roomOrWard.price}" >
+															</option>
+															
+														</select>
+														
+														
+													</div>
+												</div>
+											</div>
+											
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Admission Date</label>
+													<div class="col-sm-9">
+														<input class="form-control" type="date" id="admissionDate"
+															th:value="${patient.admissionDate}" name="admissionDate" />
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Discharge Date</label>
+													<div class="col-sm-9">
+														<input class="form-control" type="date" id="dischargeDate"
+															th:value="${patient.dischargeDate}" name="dischargeDate" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="card-footer">
+										<button type="submit" class="btn btn-outline-primary">Submit</button>
+										<a class="btn btn-outline-dark" th:href="@{/patient/patient-list}">Cancel</a>
+									</div>
+								</form>
+							</div>
+						</div>
+
+			</div>
+			<!-- content-wrapper ends -->
+			</div>
+			<!-- partial:partials/_footer.html -->
+
+			<div th:replace="common/common :: footer"></div>
+
+			<!-- partial -->
+		</div>
+		<!-- main-panel ends -->
+	</div>
+	<!-- page-body-wrapper ends -->
+	</div>
+	
+	<script type="text/javascript">
+	
+		function disOrEnSelect(){
+			var selectBox = document.getElementById("selectType");
+			var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+			if(selectedValue=="In-Patient"){
+				document.getElementById('admissionDate').disabled = false;
+				document.getElementById('dischargeDate').disabled = false;
+				document.getElementById('roomOrWard').disabled = false;
+				document.getElementById('admissionDate').required = true;
+				document.getElementById("dummy").selected = true;
+				document.getElementById('roomOrWard').required = true;
+				document.getElementById("dummy").disabled = true;
+				
+				
+			}else if(selectedValue=="Out-Patient"){
+				document.getElementById('ggwp').value = -1;
+				document.getElementById('admissionDate').disabled = true;
+				document.getElementById('dischargeDate').disabled = true;
+				document.getElementById('roomOrWard').disabled = true;
+			}
+			
+		}
+		
+		function outPatient(){
+			
+			if(document.getElementById("isOutPatient").value=="out-patient"){
+				document.getElementById('admissionDate').disabled = true;
+				document.getElementById('dischargeDate').disabled = true;
+				document.getElementById('roomOrWard').disabled = true;
+				document.getElementById('ggwp').value = -1;
+			}else{
+				document.getElementById('ggwp').value = -1;
+				
+			}	
+			
+			if(document.getElementById("isInPatient").value=="in-patient"){
+				document.getElementById('selectType').disabled = true;
+			}
+			
+		}
+		
+		function OutToIn(){
+			
+			var selectBox = document.getElementById("roomOrWard");
+			var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+			document.getElementById('ggwp').value = selectedValue;
+			console.log(selectedValue);
+		}
+		s
+	</script>
+	
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+	<!-- End custom js for this page -->
+</body>
+
+</html>

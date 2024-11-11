@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+
+		<nav th:replace="common/common :: navbar"></nav>
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:../../partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+
+			<!-- 	-->
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title"> Doctor List Table </h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{/doctor/doctorList}">Doctor's Information</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Doctor List</li>
+
+							</ol>
+						</nav>
+					</div>
+					<div class="row">
+
+						<div class="col-lg-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<div class=row>
+										<h4 class="card-title col-md-8">Doctor Table</h4>
+										<div class="col-md-4 float-right">
+											<input type="text" id="search" class="form-control" placeholder="Type to search">
+										</div>
+									</div>
+									<br><br>
+									<table class="table table-striped">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>FirstName-LastName</th>
+
+												<th>Date Of Birth</th>
+												<th>Gender</th>
+												<th>Phone Number</th>
+
+												<th>Specialization</th>
+
+												<th>Schedule</th>
+												<th>Operation</th>
+											</tr>
+										</thead>
+										<tbody id="table">
+											<tr data-th-each="doctor : ${doctorList}">
+
+												<td>#</td>
+												<td><a th:href="@{/doctor/doctorInfo(id=${doctor.doctorId})}"><span
+															th:text="${doctor.firstName}"></span>
+														<span th:text="${doctor.lastName}"></span></a></td>
+
+
+												<td th:text="${doctor.dob}"></td>
+												<td th:text="${doctor.gender}"></td>
+												<td th:text="${doctor.phone}"></td>
+												<td th:text="${doctor.specialization}"></td>
+												<td>
+													<input hidden="hidden" name="id" th:value="${doctor.doctorId}" />
+													<a th:href="@{/doctor/addSchedule?id=}+${doctor.doctorId}">Schedule</a>
+												</td>
+
+												<td>
+													<button th:id="${doctor.doctorId}" class="btn btn-danger btn-xs delete-doctor" type="submit" value="delete">
+														<i class="mdi mdi-delete-forever"></i>
+													</button>
+												</td>
+												
+											</tr>
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<!-- content-wrapper ends -->
+				<!-- partial:../../partials/_footer.html -->
+				<div th:replace="common/common :: footer"></div>
+				<!-- partial -->
+			</div>
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+	<script type="text/javascript">
+
+
+		$('.delete-doctor').on('click', function () {
+			/*<![CDATA[*/
+			var path = /*[[@{/}]]*/'remove';
+			/*]]>*/
+
+			var id = $(this).attr('id');
+
+			bootbox.confirm({
+				message: "Are you sure to remove this Doctor? It can't be undone.",
+				buttons: {
+					cancel: {
+						label: '<i class="mdi mdi-bookmark-remove"></i> Cancel'
+					},
+					confirm: {
+						label: '<i class="mdi mdi-checkbox-marked"></i> Confirm'
+					}
+				},
+				callback: function (confirmed) {
+					if (confirmed) {
+						$.post(path, {'doctorId': id}, function (res) {
+							location.reload();
+						});
+					}
+				}
+			});
+		});
+		
+		var $rows = $('#table tr');
+		$('#search').keyup(function () {
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+			$rows.show().filter(function () {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				return !~text.indexOf(val);
+			}).hide();
+		});
+
+	</script>
+	<!-- End custom js for this page -->
+</body>
+
+</html>

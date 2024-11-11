@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body>
+	<div class="container-scroller">
+	
+		<!-- partial:partials/_navbar.html -->
+		<nav th:replace="common/common :: navbar"></nav>
+		<!-- partial -->
+		
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title">Add Room's Data</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{/room/addRoom}">Rooms' Information</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Add Room</li>
+							</ol>
+						</nav>
+					</div>
+					<!-- partial -->
+					<div class="row">
+						<div class="col-12 grid-margin stretch-card">
+							<div class="card">
+								<form th:action="@{/room/addRoom}" class="forms-sample" method="post">
+									<div class="card-body">
+										<p class="card-description">Room Information </p>
+
+										<div class="form-group">
+											<label for="roomName">Room Name <code>*</code></label>
+											<input type="text" class="form-control" id="roomName" name="roomName"
+												th:value="${roomOrWard.roomName}" required="required"
+												placeholder="Room Name">
+										</div>
+
+										<div class="form-group">
+											<label for="roomType">Room Type</label>
+											<select class="form-control" th:value="${roomOrWard.type}" name="type"
+												id="type">
+												<option value="" selected="selected" disabled="disabled">Please
+													select an option...</option>
+												<option value="1">Type 1 : Single Bed Room</option>
+												<option value="2">Type 2 : Double Beds Room</option>
+												<option value="4">Type 3 : 4 Beds Room</option>
+												<option value="6">Type 4 : 6 Beds Room</option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label for="roomPrice">Price <code>*</code></label>
+
+											<div class="input-group">
+												<div class="input-group-prepend">
+													<span
+														class="input-group-text bg-gradient-primary text-white">$</span>
+												</div>
+
+												<input type="number" class="form-control" id="price" name="price"
+													placeholder="Price" th:value="${roomOrWard.price}"
+													required="required">
+												<div class="input-group-append">
+													<span class="input-group-text">.00</span>
+												</div>
+
+											</div>
+										</div>
+										<button type="submit" class="btn btn-outline-primary btn-fw">Add</button>
+										<button type="reset" class="btn btn-outline-light text-black btn-fw">Clear</button>
+										<a class="btn btn-outline-dark btn-fw" th:href="@{/}">Cancel</a>
+								</form>
+							</div>
+						</div>
+					</div>
+					</form>
+				</div>
+			</div>
+
+
+			<!-- content-wrapper ends -->
+			<!-- partial:partials/_footer.html -->
+
+			<div th:replace="common/common :: footer"></div>
+
+			<!-- partial -->
+		</div>
+		<!-- main-panel ends -->
+	</div>
+	<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+	<!-- End custom js for this page -->
+
+</body>
+
+</html>

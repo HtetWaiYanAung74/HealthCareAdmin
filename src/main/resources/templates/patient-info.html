@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+
+		<nav th:replace="common/common :: navbar"></nav>
+
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+
+					<div class="page-header">
+						<h3 class="page-title">
+							<span class="page-title-icon bg-gradient-primary text-white mr-2">
+								<i class="mdi mdi-home"></i>
+							</span> Dashboard
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item active" aria-current="page">
+									<span></span>Overview <iclass="mdi mdi-alert-circle-outline icon-sm text-primary
+										align-middle"></i>
+								</li>
+							</ul>
+						</nav>
+					</div>
+					<div class="row">
+
+						<div class="col-12">
+							<div class="card">
+
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-4">
+											<h4 class="card-title">Patient Info</h4>
+										</div>
+										<div class="col-md-4"></div>
+										<div class="col-md-4">
+											<div class="float-right"><a class="btn btn-gradient-dark"
+													th:href="@{/patient/patient-treatment(pid=${patient.patientId})}">Patient
+													Treatment</a></div>
+										</div>
+									</div>
+
+									<p class="card-description"> Personal info </p>
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">First Name</label>
+												<div class="col-sm-9">
+													<input type="text" name="firstName" th:value="${patient.firstName}"
+														class="form-control" readonly />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Last Name</label>
+												<div class="col-sm-9">
+													<input type="text" name="lastName" th:value="${patient.lastName}"
+														class="form-control" readonly />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Gender</label>
+												<div class="col-sm-9">
+													<input type="text" name="gender" th:value="${patient.gender}"
+														class="form-control" readonly />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Date of Birth</label>
+												<div class="col-sm-9">
+													<input type="text" name="dob" th:value="${patient.dob}"
+														class="form-control" readonly />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Email</label>
+												<div class="col-sm-9">
+													<input type="email" class="form-control"
+														th:value="${patient.user.email}" name="email" readonly />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Phone</label>
+												<div class="col-sm-9">
+													<input type="text" class="form-control" th:value="${patient.phone}"
+														name="phone" readonly />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">NRC</label>
+												<div class="col-sm-9">
+													<input type="text" class="form-control" th:value="${patient.nrc}"
+														name="nrc" readonly />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Address</label>
+												<div class="col-sm-9">
+													<input type="text" class="form-control"
+														th:value="${patient.address}" name="address" readonly />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Blood Type</label>
+												<div class="col-sm-9">
+													<input type="text" name="bloodType" th:value="${patient.bloodType}"
+														class="form-control" readonly />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Symptoms</label>
+												<div class="col-sm-9">
+													<input type="text" class="form-control"
+														th:value="${patient.symptoms}" name="symptoms" readonly />
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Type</label>
+												<div class="col-sm-9">
+													<input type="text" name="type" th:value="${patient.type}"
+														class="form-control" readonly />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group row" th:if="${RoomExist}">
+												<label class="col-sm-3 col-form-label">Room</label>
+												<div class="col-sm-9">
+													<input type="text" name="type"
+														th:value="${patient.roomOrWard.type}+' person room and '+ ${patient.roomOrWard.leftSpace}+' place left. Fee - '+${patient.roomOrWard.price}"
+														class="form-control" readonly />
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Admission Date</label>
+												<div class="col-sm-9">
+													<input type="text" name="admissionDate"
+														th:value="${patient.admissionDate}" class="form-control"
+														readonly />
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group row">
+												<label class="col-sm-3 col-form-label">Discharge Date</label>
+												<div class="col-sm-9">
+													<input type="text" class="form-control"
+														th:value="${patient.dischargeDate}" name="dischargeDate"
+														readonly />
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+								</div>
+								<div class="card-footer">
+									<a class="btn btn-gradient-dark"
+										th:href="@{/patient/patientUpdate(pid=${patient.patientId})}">Edit</a>
+								</div>
+							</div>
+						</div>
+
+
+
+					</div>
+					<!-- content-wrapper ends -->
+				</div>
+				<!-- partial:partials/_footer.html -->
+
+				<div th:replace="common/common :: footer"></div>
+
+				<!-- partial -->
+			</div>
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+	<!-- End custom js for this page -->
+</body>
+
+</html>

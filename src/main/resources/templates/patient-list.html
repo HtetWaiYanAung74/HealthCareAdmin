@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+
+		<nav th:replace="common/common :: navbar" />
+
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+
+					<div class="page-header">
+						<h3 class="page-title"> Patient List Table </h3>
+						<nav aria-label="breadcrumb">
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{/patient/patient-list}">Patient's Information</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Patient List</li>
+							</ul>
+							
+						</nav>
+					</div>
+					<div class="row">
+						<div class="col-lg-4"></div>
+						<div class="col-lg-4"></div>
+						<div class="col-lg-4 grid-margin stretch-card"><input type="text" id="search"
+								class="form-control" placeholder="Type to search"></div>
+					</div>
+
+					<div class="row">
+
+						<div class="col-lg-6 grid-margin stretch-card">
+							<div class="card">
+
+								<div class="card-body">
+									<h4 class="card-title">In-Patient</h4>
+
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Patient Name</th>
+												<th>Blood Type</th>
+												<th>#</th>
+											</tr>
+										</thead>
+										<tbody id="table">
+											<tr data-th-each="patient : ${patientList}">
+												<td><a th:if="${patient.isDeleteable}" class="btn btn-danger btn-xs"
+														th:href="@{/patient/patient-payment(pid=${patient.patientId})}"><i
+															class="mdi mdi-credit-card"></i></a></td>
+												<td><a th:href="@{/patient/patientInfo(id=${patient.patientId})}"><span
+															th:text="${patient.firstName}+' '+${patient.lastName}"></span></a>
+												</td>
+												<td class="text-danger" th:text="${patient.bloodType}"></td>
+												<td><a class="btn btn-danger btn-xs"
+														th:href="@{/patient/patientUpdate(pid=${patient.patientId})}"><i
+															class="mdi mdi-lead-pencil"></i></a> &nbsp;&nbsp;
+													<button th:if="${patient.isDeleteable}" th:id="${patient.patientId}"
+														class="btn btn-danger btn-xs delete-patient" type="submit"
+														value="delete"><i class="mdi mdi-delete-forever"></i></button>
+
+												</td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-lg-6 grid-margin stretch-card">
+							<div class="card">
+
+								<div class="card-body">
+									<h4 class="card-title">Out-Patient</h4>
+
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Patient Name</th>
+												<th>Phone</th>
+												<th>#</th>
+											</tr>
+										</thead>
+										<tbody id="table">
+											<tr data-th-each="patient : ${patientList1}">
+												<td>#</td>
+												<td><a th:href="@{/patient/patientInfo(id=${patient.patientId})}">
+													<span th:text="${patient.firstName}+' '+${patient.lastName}"></span>
+												</a></td>
+												<td th:text="${patient.phone}"></td>
+												<td><a class="btn btn-danger btn-xs"
+														th:href="@{/patient/patientUpdate(pid=${patient.patientId})}"><i
+															class="mdi mdi-lead-pencil"></i></a> &nbsp;&nbsp;
+													<button th:id="${patient.patientId}"
+														class="btn btn-danger btn-xs delete-patient" type="submit"
+														value="delete"><i class="mdi mdi-delete-forever"></i></button>
+												</td>
+											</tr>
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<!-- content-wrapper ends -->
+				</div>
+				<!-- partial:partials/_footer.html -->
+
+				<div th:replace="common/common :: footer"></div>
+
+				<!-- partial -->
+			</div>
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+	<script type="text/javascript">
+
+
+		$('.delete-patient').on('click', function () {
+			/*<![CDATA[*/
+			var path = /*[[@{/}]]*/'patientDelete';
+			/*]]>*/
+
+			var id = $(this).attr('id');
+
+			bootbox.confirm({
+				message: "Are you sure to remove this patient? It can't be undone.",
+				buttons: {
+					cancel: {
+						label: '<i class="mdi mdi-refresh"></i> Cancel'
+					},
+					confirm: {
+						label: '<i class="mdi mdi-delete-forever"></i> Confirm'
+					}
+				},
+				callback: function (confirmed) {
+					if (confirmed) {
+
+						$.post(path, {'pid': id}, function (res) {
+							location.reload();
+						});
+					}
+				}
+			});
+		});
+
+		var $rows = $('#table tr');
+		$('#search').keyup(function () {
+			var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+			$rows.show().filter(function () {
+				var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+				return !~text.indexOf(val);
+			}).hide();
+		});
+
+
+
+	</script>
+
+	<!-- End custom js for this page -->
+</body>
+
+</html>

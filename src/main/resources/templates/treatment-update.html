@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body onload="setNulling();">
+
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+
+		<nav th:replace="common/common :: navbar"></nav>
+
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+
+					<div class="page-header">
+						<h3 class="page-title">Add Treatment's Data</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{/patient/treatment-update(tid=${treatment.treatmentId})}">Treatments' Information</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Update Treatment</li>
+							</ol>
+						</nav>
+					</div>
+					<div class="row">
+
+
+						<div class="col-12">
+							<div class="card">
+								<form th:action="@{/patient/treatment-form}" class="form-sample" method="POST">
+									<div class="card-body">
+										<h4 class="card-title">Patient Treatment Form</h4>
+
+										<input type="hidden" id="treatmentId" name="treatmentId"
+											th:value="${treatment.treatmentId}" />
+										<input type="hidden" id="patientId" name="patientId"
+											th:value="${patient.patientId}" />
+										<p class="card-description"><span
+												th:text="${patient.firstName}+' '+${patient.lastName}"></span>'s
+											Personal Treatment </p>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Specailization</label>
+													<div class="col-sm-9">
+														<select class="form-control" id="specialization"
+															name="specialization" onclick="disableDoctor();">
+															<option value="dental"
+																th:selected="${treatment.doctor.specialization}==dental">
+																Dental</option>
+															<option value="cardiology"
+																th:selected="${treatment.doctor.specialization}==cardiology">
+																Cardiology(Heart)</option>
+															<option value="dermatology"
+																th:selected="${treatment.doctor.specialization}==dermatology">
+																Dermatology(Skin)</option>
+															<option value="oncology"
+																th:selected="${treatment.doctor.specialization}==oncology">
+																Oncology(Cancer)</option>
+															<option value="nephrology"
+																th:selected="${treatment.doctor.specialization}==nephrology">
+																Nephrology(Kidney)</option>
+															<!--<option value="ddd" >ddd</option>
+															<option value="eee" >eee</option>
+															<option value="fff" >fff</option>-->
+
+														</select>
+													</div>
+												</div>
+											</div>
+
+											<input type="hidden" id="ggwpValue" name="ggwpValue"
+												th:value="${ggwpValue}" />
+
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Doctor's Name</label>
+													<div class="col-sm-9">
+														<select class="form-control" id="doctorIdSpec"
+															name="doctorIdSpec">
+															<option id="dummy">Choose One Doctor</option>
+															<option th:each="doctor : ${doctorList}" id="doctorName"
+																th:value="${doctor.doctorId}+' '+${doctor.specialization}"
+																th:text="${doctor.firstName}+' '+${doctor.lastName}"
+																th:selected="${treatment.doctor.doctorId}==${doctor.doctorId}"
+																disabled></option>
+
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Treatment Date</label>
+													<div class="col-sm-9">
+														<input class="form-control" type="date"
+															th:value="${treatment.treatmentDate}" name="treatmentDate"
+															required />
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Blood Pressure</label>
+													<div class="col-sm-9">
+														<input class="form-control" type="number"
+															th:value="${treatment.bloodPressure}" name="bloodPressure"
+															step="0.1" required />
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Comment</label>
+													<div class="col-sm-9">
+														<textarea class="form-control" name="comment"
+															th:text="${treatment.comment}"></textarea>
+													</div>
+												</div>
+											</div>
+
+										</div>
+
+									</div>
+									<div class="card-footer">
+										<button type="submit" class="btn btn-outline-primary">Submit</button>
+										<a class="btn btn-outline-dark"
+											th:href="@{/patient/patient-treatment(pid=${patient.patientId})}">Cancel</a>
+									</div>
+								</form>
+							</div>
+						</div>
+
+					</div>
+					<!-- content-wrapper ends -->
+				</div>
+				<!-- partial:partials/_footer.html -->
+
+				<div th:replace="common/common :: footer"></div>
+
+				<!-- partial -->
+			</div>
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+
+	<script type="text/javascript">
+
+
+
+		function disableDoctor() {
+			var selectBox = document.getElementById("specialization");
+			var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+			var allValues = document.getElementById("doctorIdSpec").options;
+
+			for (let i = 0; i < allValues.length; i++) {
+				let value = allValues[i].value;
+				let indexs = value.indexOf(' ');
+				let spec = value.substring(indexs + 1);
+
+				console.log(spec);
+				console.log(selectedValue);
+
+				if (selectedValue == spec) {
+					console.log('here');
+					allValues[i].disabled = false;
+				} else {
+					document.getElementById("dummy").selected = true;
+					allValues[i].disabled = true;
+				}
+
+			}
+
+
+		}
+
+
+
+	</script>
+
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+
+	<script type="text/javascript">
+
+		$('.treatmentDelete').on('click', function () {
+			/*<![CDATA[*/
+			var path = /*[[@{/}]]*/'treatmentDelete';
+			/*]]>*/
+
+			var id = $(this).attr('id');
+
+			console.log(document.getElementById('patientId').value);
+
+			bootbox.confirm({
+				message: "Are you sure to remove this treatment? It can't be undone.",
+				buttons: {
+					cancel: {
+						label: '<i class="mdi mdi-refresh"></i> Cancel'
+					},
+					confirm: {
+						label: '<i class="mdi mdi-delete-forever"></i> Confirm'
+					}
+				},
+				callback: function (confirmed) {
+					if (confirmed) {
+						$.post(path, {'tid': id}, function (res) {
+							location.reload();
+						});
+					}
+				}
+			});
+		});
+
+		function setNulling() {
+			console.log(document.getElementById("ggwpValue").value);
+			document.getElementById("doctorIdSpec").value = document.getElementById("ggwpValue").value;
+			document.getElementById("ggwpValue").active = true;
+		}
+
+	</script>
+	<!-- End custom js for this page -->
+</body>
+
+</html>

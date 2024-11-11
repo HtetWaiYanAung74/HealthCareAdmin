@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+
+		<nav th:replace="common/common :: navbar"></nav>
+
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:partials/_sidebar.html -->
+			<nav class="sidebar sidebar-offcanvas" id="sidebar">
+				<ul class="nav">
+
+					<li class="nav-item">
+						<a class="nav-link" href="index.html">
+							<span class="menu-title">Dashboard</span>
+							<i class="mdi mdi-home menu-icon"></i>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
+							aria-controls="ui-basic">
+							<span class="menu-title">Basic UI Elements</span>
+							<i class="menu-arrow"></i>
+							<i class="mdi mdi-crosshairs-gps menu-icon"></i>
+						</a>
+						<div class="collapse" id="ui-basic">
+							<ul class="nav flex-column sub-menu">
+								<li class="nav-item"> <a class="nav-link"
+										href="pages/ui-features/buttons.html">Buttons</a></li>
+								<li class="nav-item"> <a class="nav-link"
+										href="pages/ui-features/typography.html">Typography</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="pages/icons/mdi.html">
+							<span class="menu-title">Icons</span>
+							<i class="mdi mdi-contacts menu-icon"></i>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="pages/forms/basic_elements.html">
+							<span class="menu-title">Forms</span>
+							<i class="mdi mdi-format-list-bulleted menu-icon"></i>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="pages/charts/chartjs.html">
+							<span class="menu-title">Charts</span>
+							<i class="mdi mdi-chart-bar menu-icon"></i>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="pages/tables/basic-table.html">
+							<span class="menu-title">Tables</span>
+							<i class="mdi mdi-table-large menu-icon"></i>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" data-toggle="collapse" href="#general-pages" aria-expanded="false"
+							aria-controls="general-pages">
+							<span class="menu-title">Sample Pages</span>
+							<i class="menu-arrow"></i>
+							<i class="mdi mdi-medical-bag menu-icon"></i>
+						</a>
+						<div class="collapse" id="general-pages">
+							<ul class="nav flex-column sub-menu">
+								<li class="nav-item"> <a class="nav-link" href="pages/samples/blank-page.html"> Blank
+										Page </a></li>
+								<li class="nav-item"> <a class="nav-link" href="pages/samples/login.html"> Login </a>
+								</li>
+								<li class="nav-item"> <a class="nav-link" href="pages/samples/register.html"> Register
+									</a></li>
+								<li class="nav-item"> <a class="nav-link" href="pages/samples/error-404.html"> 404 </a>
+								</li>
+								<li class="nav-item"> <a class="nav-link" href="pages/samples/error-500.html"> 500 </a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-item sidebar-actions">
+						<span class="nav-link">
+							<div class="border-bottom">
+								<h6 class="font-weight-normal mb-3">Projects</h6>
+							</div>
+							<button class="btn btn-block btn-lg btn-gradient-primary mt-4">+ Add a project</button>
+							<div class="mt-4">
+								<div class="border-bottom">
+									<p class="text-secondary">Categories</p>
+								</div>
+								<ul class="gradient-bullet-list mt-4">
+									<li>Free</li>
+									<li>Pro</li>
+								</ul>
+							</div>
+						</span>
+					</li>
+				</ul>
+			</nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+
+					<div class="page-header">
+						<h3 class="page-title">
+							<span class="page-title-icon bg-gradient-primary text-white mr-2">
+								<i class="mdi mdi-home"></i>
+							</span> Dashboard
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item active" aria-current="page">
+									<span></span>Overview <iclass="mdi mdi-alert-circle-outline icon-sm text-primary
+										align-middle"></i>
+								</li>
+							</ul>
+						</nav>
+					</div>
+					<div class="row">
+
+						<div class="col-12">
+							<div class="card">
+								<form th:action="@{/room/add}" class="form-sample" method="POST">
+									<div class="card-body">
+										<h4 class="card-title">Room Form</h4>
+
+										<p class="card-description"> Room info </p>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Room Name</label>
+													<div class="col-sm-9">
+														<input type="text" placeholder="Room Name" name="roomName"
+															th:value="${roomOrWard.roomName}" class="form-control" />
+													</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Room Type</label>
+													<div class="col-sm-9">
+															<select class="form-control" th:value="${roomOrWard.type}"
+															name="type">
+															<option th:selected="${roomOrWard.type}==1"
+																value=1>1 Person</option>
+															<option th:selected="${roomOrWard.type}==2"
+																value=2>2 Person</option>
+															<option th:selected="${roomOrWard.type}==4"
+																value=4>4 Person</option>
+															<option th:selected="${roomOrWard.type}==6"
+																value=6>6 Person</option>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<div class="form-group row">
+													<label class="col-sm-3 col-form-label">Price</label>
+													<div class="col-sm-9">
+														<input type="text" placeholder="Price" name="price"
+															th:value="${roomOrWard.price}" class="form-control" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="card-footer">
+										<button type="submit" class="btn btn-gradient-primary mr-2">Submit</button>
+										<a class="btn btn-gradient-dark" th:href="@{/patient/patient-list}">Cancel</a>
+									</div>
+								</form>
+							</div>
+						</div>
+
+			</div>
+			<!-- content-wrapper ends -->
+			</div>
+			<!-- partial:partials/_footer.html -->
+
+			<div th:replace="common/common :: footer"></div>
+
+			<!-- partial -->
+		</div>
+		<!-- main-panel ends -->
+	</div>
+	<!-- page-body-wrapper ends -->
+	</div>
+	
+	<script type="text/javascript">
+		function disOrEnSelect(){
+			var selectBox = document.getElementById("selectType");
+			var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+			if(selectedValue=="In-Patient"){
+				
+				document.getElementById('roomOrWard').disabled = false;
+				
+			}else if(selectedValue=="Out-Patient"){
+				
+				document.getElementById('roomOrWard').disabled = true;
+			}
+			
+		}
+	</script>
+	
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+	<!-- End custom js for this page -->
+</body>
+
+</html>

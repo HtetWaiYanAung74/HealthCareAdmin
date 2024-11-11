@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head th:replace="common/common :: common-header">
+</head>
+
+<body>
+	<div class="container-scroller">
+		<!-- partial:partials/_navbar.html -->
+
+		<nav th:replace="common/common :: navbar"></nav>
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:../../partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+
+
+
+			<!-- 	-->
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="page-header">
+						<h3 class="page-title"
+							th:text="${#strings.toUpperCase(doctor.firstName)}+' '+${#strings.toUpperCase(doctor.lastName)}">
+						</h3>
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a th:href="@{/doctor/doctorList}">Doctor's List</a></li>
+								<li class="breadcrumb-item active"><a>Update Doctor's Schedule</a></li>
+
+							</ol>
+						</nav>
+					</div>
+					<div class="row">
+
+
+						<div class="col-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Doctor's Schedule Data Form</h4>
+
+									<form th:action="@{/doctor/updateSchedule}" method="post">
+
+										<input hidden="hidden" name="doctorFreeTimeId" id="doctorFreeTimeId"
+											th:value="${doctorFreeTime.doctorFreeTimeId}" />
+										<input hidden="hidden" name="id" th:value="${doctor.doctorId}" />
+										<input hidden="hidden" name="doctorId" th:value="${doctor.doctorId}" />
+										
+										<div class="row">
+											
+											<div class="col-md-4">
+												<label class="sr-only" for="inlineFormInputGroupUsername2">Start Time</label>
+												<div class="input-group mb-2 mr-sm-2">
+													<div class="input-group-prepend">
+														<div class="input-group-text bg-gradient-primary text-white"><i class="mdi mdi-clock-start"></i></div>
+													</div>
+													<input type="time" class="form-control" name="startTime" th:value="${doctorFreeTime.startTime}"
+														placeholder="Start Time">
+												</div>
+											</div>
+										
+											<div class="col-md-4">
+												<label class="sr-only" for="inlineFormInputGroupUsername2">End Time</label>
+												<div class="input-group mb-2 mr-sm-2">
+													<div class="input-group-prepend">
+														<div class="input-group-text bg-gradient-primary text-white"><i class="mdi mdi-clock-end"></i></div>
+													</div>
+													<input type="time" class="form-control" name="endTime" th:value="${doctorFreeTime.endTime}" placeholder="End Time">
+												</div>
+											</div>
+											
+											<div class="col-md-4">
+												<button type="submit" class="btn btn-outline-primary btn-fw">Update</button>
+											</div>
+											
+										</div>
+										
+										<div class="row">
+										
+											<div class="col-md-4">
+												<label class="sr-only" for="inlineFormInputName2">Day</label>
+												<div class="input-group mb-2 mr-sm-2">
+													<div class="input-group-prepend">
+														<div class="input-group-text bg-gradient-primary text-white"><i class="mdi mdi-calendar-today"></i></div>
+													</div>
+													<select class="form-control" th:value="${doctorFreeTime.day}"
+															name="day" required>
+															<option th:selected="${doctorFreeTime.day}=='Monday'" value="Monday">Monday
+															</option>
+															<option th:selected="${doctorFreeTime.day}=='Tuesday'" value="Tuesday">Tuesday
+															</option>
+															<option th:selected="${doctorFreeTime.day}=='Wednesday'" value="Wednesday">Wednesday
+																</option>
+															<option th:selected="${doctorFreeTime.day}=='Thursday'" value="Thursday">Thursday
+															</option>
+															<option th:selected="${doctorFreeTime.day}=='Friday'" value="Friday">Friday
+															</option>
+															<option th:selected="${doctorFreeTime.day}=='Saturday'" value="Saturday">Saturday
+															</option>
+															<option th:selected="${doctorFreeTime.day}=='Sunday'" value="Sunday">Sunday
+															</option>
+														</select>
+											
+												</div>
+											</div>
+											
+											<div class="col-md-4">
+												<label class="sr-only" for="inlineFormInputGroupUsername2">Number of
+													Patient</label>
+												<div class="input-group mb-2 mr-sm-2">
+													<div class="input-group-prepend">
+														<div class="input-group-text bg-gradient-primary text-white"><i class="mdi mdi-account-check"></i>
+														</div>
+													</div>
+													<input type="number" class="form-control" name="numberOfPatient" th:value="${doctorFreeTime.numberOfPatient}"
+														placeholder="Number of Patient Per Day">
+												</div>
+											</div>
+											
+											<div class="col-md-4">
+												<a class="btn btn-outline-dark btn-fw"
+												th:href="@{/doctor/addSchedule(id=${doctor.doctorId})}">Cancel</a>
+											</div>
+											
+										</div>					
+
+									</form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				
+					<!-- content-wrapper ends -->
+					<!-- partial:../../partials/_footer.html -->
+					<div th:replace="common/common :: footer"></div>
+					<!-- partial -->
+				</div>
+				<!-- main-panel ends -->
+			</div>
+			<!-- page-body-wrapper ends -->
+		</div>
+		<!-- container-scroller -->
+		<!-- plugins:js -->
+		<div th:replace="common/common :: body-bottom-scripts"></div>
+		<!-- End custom js for this page -->
+</body>
+
+</html>

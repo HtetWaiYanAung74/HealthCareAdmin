@@ -1,0 +1,278 @@
+<!-- 
+	@Author Htet Wai Yan Aung
+	!-->
+	
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="common/common :: common-header">
+
+	<!-- data table -->
+	<link th:href="@{/css/jquery.dataTables.min.css}" rel="stylesheet" />
+	<link th:href="@{/css/dataTables.bootstrap.min.css}" rel="stylesheet" />
+
+	<link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
+
+	<!-- Custom styles for this template -->
+	<link th:href="@{/css/style.css}" rel="stylesheet" />
+
+</head>
+
+<body onload="maximumVal()">
+	<div class="container-scroller">
+
+		<!-- partial:../../partials/_navbar.html -->
+		<div th:replace="common/common :: navbar" />
+
+		<!-- partial -->
+		<div class="container-fluid page-body-wrapper">
+			<!-- partial:../../partials/_sidebar.html -->
+			<nav th:replace="common/common :: sidebar"></nav>
+			<!-- partial -->
+			<div class="main-panel">
+				<div class="content-wrapper">
+					<div class="row">
+						<div class="col-12 grid-margin stretch-card">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="text-center">
+										<span th:text="${patient.firstName}+' '+${patient.lastName}"></span>'s Payment
+									</h4>
+								</div>
+								<div class="card-body">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>Patient Name</th>
+													<th>Date</th>
+													<th>Paid Amount</th>
+													<th>Remaining Amount</th>
+													<th>Operation</th>
+												</tr>
+											</thead>
+											<tbody>
+											<input type="hidden" th:value="${patient.patientId}" id="pid" name="pid" /> 
+												<tr th:each="payment : ${paymentList}">
+													<td th:text="${patient.firstName}+' '+${patient.lastName}"></td>
+													<td th:text="${payment.date}"></td>
+													<td th:text="${payment.paidAmount}"></td>
+													<td th:text="${payment.remainingAmount}"></td>
+													<td>
+														<button th:id="${payment.paymentId}" class="btn btn-danger btn-xs delete-payment" 
+															style="margin-left: 15px;" type="submit" value="delete">
+															<i class="mdi mdi-delete-forever"></i>
+														</button>	
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										
+										<br><br><br>
+										<form th:action="@{/patient/patient-payment}" method="post">
+											<input type="hidden" th:value="${patient.patientId}" id="pid" name="pid" /> 											
+											<h4 class="card-description text-center">Payment Form</h4>
+											<div th:if="${missingRequiredField}">
+												<h5 class="alert alert-warning">There are some fields
+													missing. Field with * is required.</h5>
+											</div>
+
+											<!--Accordion wrapper-->
+											<div class="accordion md-accordion" id="accordionEx" role="tablist"
+												aria-multiselectable="true">
+
+												<!-- Accordion card -->
+												<div class="card">
+
+													<!-- Card header -->
+													<div class="card-header" role="tab" id="headingOne1">
+														<a data-toggle="collapse" data-parent="#accordionEx"
+															href="#collapseOne1" aria-expanded="true"
+															aria-controls="collapseOne1">
+															<h5 class="mb-0"> Patient Details
+																<div class="float-right">
+																	<i class="mdi mdi-arrow-down"></i>
+																</div>
+															</h5>
+														</a>
+													</div>
+
+													<!-- Card body -->
+													<div id="collapseOne1" class="collapse show" role="tabpanel"
+														aria-labelledby="headingOne1" data-parent="#accordionEx">
+														<div class="card-body">
+															<div class="form-group">
+																<label for="name">Name</label> <input type="text"
+																	class="form-control" id="name" name="name" readonly
+																	th:value="${patient.firstName}+' '+${patient.lastName}" />
+															</div>
+															<div class="form-group">
+																<label for="dob">Date of Birth</label>
+																<input type="date" class="form-control" id="dob"
+																	name="dob" readonly th:value="${patient.dob}" />
+															</div>
+															<div class="form-group">
+																<label for="gender">Gender</label>
+																<input type="text" class="form-control" id="gender"
+																	name="gender" readonly th:value="${patient.gender}" />
+															</div>
+															<div class="form-group">
+																<label for="phone">Phone</label>
+																<input type="text" class="form-control" id="phone"
+																	name="phone" readonly th:value="${patient.phone}" />
+															</div>
+															<div class="form-group">
+																<label for="email">Email</label>
+																<input type="email" class="form-control" id="email"
+																	name="email" readonly
+																	th:value="${patient.user.email}" />
+															</div>
+															<div class="form-group">
+																<label for="address">Address</label>
+																<input type="text" class="form-control" id="address"
+																	name="address" readonly
+																	th:value="${patient.address}" />
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<!-- Accordion card -->
+
+												<!-- Accordion card -->
+												<div class="card">
+
+													<!-- Card header -->
+													<div class="card-header" role="tab" id="headingThree3">
+														<a class="collapsed" data-toggle="collapse"
+															data-parent="#accordionEx" href="#collapseThree3"
+															aria-expanded="false" aria-controls="collapseThree3">
+															<h5 class="mb-0"> Payment Details
+																<div class="float-right">
+																	<i class="mdi mdi-arrow-down"></i>
+																</div>
+															</h5>
+														</a>
+													</div>
+
+													<!-- Card body -->
+													<div id="collapseThree3" class="collapse" role="tabpanel"
+														aria-labelledby="headingThree3" data-parent="#accordionEx">
+														<div class="card-body">
+															<div class="form-group">
+																<label for="date">Date</label> <input type="date"
+																	class="form-control" id="date" name="date" required
+																	th:value="${payment.date}" />
+															</div>
+															<div class="form-group">
+																<label for="paidAmount">Paid Amount</label> <input
+																	type="number" class="form-control" id="paidAmount"
+																	name="paidAmount" required
+																	th:value="${payment.paidAmount}" onKeyUp="onChanged();" />
+															</div>
+															<div class="form-group">
+																<label for="totalAmount">Total Amount</label>
+																<input type="number" class="form-control"
+																	id="totalAmount" name="totalAmount" readonly
+																	th:value="${payment.totalAmount}" />
+															</div>
+															<div class="form-group">
+																<label for="remainingAmount">Remaining Amount</label>
+																<input type="number" class="form-control"
+																	id="remainingAmount" name="remainingAmount" readonly
+																	th:value="${payment.remainingAmount}" />
+															</div>
+														</div>
+													</div>
+
+												</div>
+												<!-- Accordion card -->
+
+											</div>
+											<!-- Accordion wrapper -->
+
+											<br> <br>
+											<div th:if="${disableButtons}">
+												<button type="submit" class="btn btn-outline-primary">Submit</button>
+										<a class="btn btn-outline-dark" th:href="@{/patient/patient-list}">Cancel</a>
+											</div>
+										</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- content-wrapper ends -->
+				<!-- partial:../../partials/_footer.html -->
+				<div th:replace="common/common :: footer"></div>
+				<!-- partial -->
+			</div>
+			<!-- main-panel ends -->
+		</div>
+		<!-- page-body-wrapper ends -->
+	</div>
+	<!-- container-scroller -->
+	<!-- plugins:js -->
+	<div th:replace="common/common :: body-bottom-scripts"></div>
+
+	<script th:src="@{/js/jquery.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+
+	<script th:src="@{/js/scripts.js}"></script>
+
+	<!-- data table -->
+	<script th:src="@{/js/jquery.dataTables.min.js}"></script>
+	<script th:src="@{/js/dataTables.bootstrap.min.js}"></script>
+	<!-- End custom js for this page -->
+	
+	<script type="text/javascript">
+		
+		function maximumVal() {
+			
+			var paidAmt = document.getElementById("paidAmount");
+			paidAmt.setAttribute("max", document.getElementById("totalAmount").value);
+			
+		}
+			
+		function onChanged() {
+			var total = document.getElementById('totalAmount').value;
+			var paidAmt = document.getElementById('paidAmount').value;
+			console.log(total);
+			console.log(paidAmt);
+			document.getElementById('remainingAmount').value = total - paidAmt;	
+					
+		}
+		
+		$('.delete-payment').on('click', function (){
+		/*<![CDATA[*/
+	    var path = /*[[@{/}]]*/'patient-payment/delete';
+	    /*]]>*/
+		
+		var id=$(this).attr('id');
+		
+		bootbox.location
+		
+		bootbox.confirm({
+			message: "Are you sure to remove this payment? It can't be undone.",
+			buttons: {
+				cancel: {
+					label:'<i class="mdi mdi-refresh"></i> Cancel'
+				},
+				confirm: {
+					label:'<i class="mdi mdi-delete-forever"></i> Confirm'
+				}
+			},
+			callback: function(confirmed) {
+				if(confirmed) {
+					$.post(path, {'id':id}, function(res) {
+						location.reload();
+					});
+				}
+			}
+		});
+	});
+	
+	</script>
+	
+</body>
+
+</html>
